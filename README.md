@@ -102,8 +102,6 @@ Usuario → HAProxy (puerto 80) → selecciona web1 o web2 → Apache + PHP → 
 
 Los servidores `web1` y `web2` **no exponen puertos al host**: solo reciben tráfico interno desde HAProxy, que es quien distribuye las solicitudes entre ambos.
 
-> **[INSERTAR CAPTURA: diagrama o `docker ps` mostrando los 4 contenedores activos]**
-
 ---
 
 ## 6. Descripción de los archivos del proyecto
@@ -155,8 +153,6 @@ La instalación se verificó con la imagen `hello-world`:
 docker run hello-world
 ```
 
-> **[INSERTAR CAPTURA: salida de `hello-world` — "Hello from Docker!"]**
-
 **Pasos de post-instalación** (para usar Docker sin `sudo`):
 
 ```bash
@@ -166,7 +162,6 @@ sudo usermod -aG docker $USER
 
 Tras cerrar sesión y volver a iniciar, se confirmó que Docker funciona sin privilegios elevados.
 
-> **[INSERTAR CAPTURA: `docker run hello-world` ejecutado sin sudo]**
 
 ---
 
@@ -180,7 +175,6 @@ docker compose up --build -d
 
 Este comando descarga las imágenes de MariaDB y HAProxy, construye las imágenes de `web1` y `web2` desde su `Dockerfile`, crea la red privada y levanta los cuatro contenedores en segundo plano.
 
-> **[INSERTAR CAPTURA: salida del `docker compose up --build -d` con los contenedores en estado "Started"]**
 
 Estado de los contenedores:
 
@@ -189,7 +183,6 @@ docker ps
 docker compose ps
 ```
 
-> **[INSERTAR CAPTURA: `docker ps` mostrando haproxy, web1, web2 y mariadb en estado "Up"]**
 
 Se observa que únicamente **HAProxy expone el puerto 80 al host** (`0.0.0.0:80->80/tcp`), mientras que `web1`, `web2` y `mariadb` solo mantienen puertos internos.
 
@@ -205,7 +198,6 @@ curl http://localhost:80
 
 Al repetir el comando, el valor de **`SERVER_ADDR` alterna entre dos direcciones IP distintas** (correspondientes a `web1` y `web2`), lo que demuestra que HAProxy está distribuyendo las peticiones entre ambos servidores web.
 
-> **[INSERTAR CAPTURA: varios `curl` mostrando el SERVER_ADDR alternando entre las IPs de web1 y web2]**
 
 ---
 
@@ -260,7 +252,6 @@ docker compose up --build -d
 
 Tras el arreglo, las peticiones devuelven la conexión exitosa **y** los datos de la tabla, manteniendo el balanceo de carga entre `web1` y `web2`.
 
-> **[INSERTAR CAPTURA: `curl` mostrando "Conexión exitosa", los registros de la tabla usuarios y el SERVER_ADDR alternando]**
 
 ---
 
@@ -292,7 +283,6 @@ docker exec -it mariadb mariadb -uusuario -ppassword mi_base_de_datos -e "SELECT
 docker network inspect proyecto_webnet
 ```
 
-> **[INSERTAR CAPTURA: salida de los comandos de administración]**
 
 Otros comandos útiles de administración:
 
